@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SendMoney</title>
 </head>
+
 <body>
-    
+    <header>
+        <h1>Alke Wallet</h1>
+        <p>Enviar dinero</p>
+    </header>
+
+    <main>
+        <h2>Transferencia</h2>
+
+        <form>
+            <label for="contact">Contacto</label><br>
+            <input type="text" id="contact" name="contact" placeholder="Nombre del contacto" required><br><br>
+
+            <label for="amount">Monto</label><br>
+            <input type="number" id="amount" name="amount" min="1" required><br><br>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <section>
+            <h3>Contactos guardados</h3>
+            <ul>
+                <li>Juan Pérez</li>
+                <li>María González</li>
+                <li>Carlos Soto</li>
+            </ul>
+        </section>
+
+        <br>
+        <a href="menu.html">Volver al menú</a>
+    </main>
+
+    <footer>
+        <p>© 2026 Alke Wallet</p>
+    </footer>
+
 </body>
+
 </html>
