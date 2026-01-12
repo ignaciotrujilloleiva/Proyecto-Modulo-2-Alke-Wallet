@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deposit</title>
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
-    <header>
-        <h1>Alke Wallet</h1>
-        <p>Depósito de fondos</p>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Alke Wallet</h1>
+            <p>Depósito de fondos</p>
+        </header>
 
-    <main>
-        <h2>Realizar depósito</h2>
+        <main>
+            <h2>Realizar depósito</h2>
 
-        <form>
-            <label for="amount">Monto a depositar</label><br>
-            <input type="number" id="amount" name="amount" min="1" required><br><br>
+            <form>
+                <label for="amount">Monto a depositar</label><br>
+                <input type="number" id="amount" name="amount" min="1" required><br><br>
+            </form>
 
-            <button type="submit">Depositar</button>
-            <a href="menu.html">
-            <button type="button">Volver al menú</button></a>
-        </form>
+            <br>
+            
+            <!-- Boton de regreso a menu --> 
+            <div>
+                <a href="menu.html">
+                    <button type="button">Volver al menú</button>
+                </a>
+            </div>
 
-        <br>
 
-        
-    </main>
+        </main>
 
-    <footer>
-        <p>© 2026 Alke Wallet</p>
-    </footer>
-
+        <footer>
+            <p>© 2026 Alke Wallet</p>
+        </footer>
+    </div>
 </body>
 
 </html>
