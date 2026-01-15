@@ -4,44 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Login</title>
+    <link href="Style.css" rel="stylesheet">
+    <!-- Integración de iconos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Integración de bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
-<body>
-    <div class="container">
-        <header>
-            <h1>Alke Wallet</h1>
-            <p>Accede a tu billetera digital</p>
-        </header>
-
-        <main>
-            <h2>Iniciar sesión</h2>
-
-            <form>
-                <label for="email">Correo electrónico</label><br>
-                <input type="email" id="email" name="email" required><br><br>
-
-                <label for="password">Contraseña</label><br>
-                <input type="password" id="password" name="password" required><br><br>
-
-                </a>
-            </form>
-
-            <!-- Boton de regreso a menu --> 
-            <div>
-                <a href="menu.html">
-                    <button type="button">Volver al menú</button>
-                </a>
+<body class="bg-light">
+    <!-- Contenedor central con margen superior -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Inicio de sesión</h2>
+        <!-- Inicio del formulario -->
+        <form>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" class="form-control">
             </div>
 
-
-        </main>
-
-        <footer>
-            <p>© 2026 Alke Wallet</p>
-        </footer>
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <input type="password" class="form-control">
+            </div>
+            <!-- Boton desde bootstrap con estilo aplicado -->
+            <a href="menu.html" class="btn btn-primary btn-lg w-100 rounded-pill">
+                Iniciar sesión
+            </a>
+            <!-- Línea con texto claro e icono WhatsApp -->
+            <div class="text-center mt-3">
+                <a href="login.html" class="text-muted text-decoration-none">
+                    <i class="bi bi-whatsapp"></i> ¿Problema con su clave?
+                </a>
+            </div>
+        </form>
     </div>
+    <!-- Integración de JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
