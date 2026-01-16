@@ -1,59 +1,52 @@
-
-/* Credenciales previamente guardadas */
+/* Credenciales pre cargadas*/
 const USER = "admin@mail.com";
 const PASS = "1234";
 
+/* En jQuery, esperamos a que el documento HTML esté listo */
+$(document).ready(function () {
 
-/* Constante para capturar lo que se encuentra en <form> */
-const form = document.getElementById("loginForm");
-/* Constante Mensaje para enviar mensaje a usuario mediante un <p> vacio */
-const mensaje = document.getElementById("mensaje");
-/* Constante para recordar credenciales */
-const recordar = document.getElementById("recordar");
-/* uso de If para enviar mensaje si hay evento click en <a> ¿problemas con su clave?" */
-if (recordar) {
-    recordar.addEventListener("click", function (e) {
+    /* Evento para "¿Problemas con su clave?" */
+    /* Captura del click del enlace usando jQuery */
+    $("#recordar").click(function (e) {
+        e.preventDefault();
+        /* Muestra un mensaje con las credenciales simuladas */
+        alert(`Por favor, no vuelva a olvidar sus credenciales\nEmail: ${USER}\nContraseña: ${PASS}`);
+    });
+
+    /* Evento submit del formulario de login */
+    $("#loginForm").submit(function (e) {
         e.preventDefault();
 
-        /* Mensaje de alerta con las credenciales */
-        alert(`Por favor, no vuelva a olvidar sus credenciales
-            Email:
-            ${USER}
-            Contraseña: 
-            ${PASS}`);
+        /* Captura de valores de los inputs */
+        const email = $("#email").val();
+        const password = $("#password").val();
+
+        /* Validación de Credenciales */
+        if (email === USER && password === PASS) {
+            
+            /* Mostramos mensaje de éxito */
+            /* .text() cambia el contenido */
+            /* .attr("class", ...) cambia la clase CSS */
+            $("#mensaje").text("Has iniciado tu sesión")
+                         .attr("class", "text-success");
+
+            /* Guardado de datos en Local Storage */
+            localStorage.setItem("saldo", 100000);
+            localStorage.setItem("movimientos", JSON.stringify([
+                "+ $20.000 Depósito",
+                "- $5.000 Envío",
+                "+ $10.000 Depósito"
+            ]));
+
+            /* Redirección con retraso */
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 1000);
+
+        } else {
+            // Mensaje de error si credenciales son incorrectas
+            $("#mensaje").text("Credenciales incorrectas")
+                         .attr("class", "text-danger");
+        }
     });
-}
-
-/* Escuchamos el evento submit en el boton de inicio de sesion del formulario */
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    /* Capturamos el valor del input email y password */
-    /* Se cambia de queryselector a getElementById */
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    /* Validación de Credenciales */
-    if (email === USER && password === PASS) {
-        mensaje.textContent = "Haz iniciado tu sesión";
-        mensaje.className = "text-success";
-
-        /* Guardado de datos para que recuerde el saldo inicial */
-        localStorage.setItem("saldo", 100000);
-        /* Crea una lista vacia para futuros movimientos */
-        /* Se quitan los datos de la lista en la hoja transactions.html */
-        localStorage.setItem("movimientos", JSON.stringify([
-            "+ $20.000 Depósito",
-            "- $5.000 Envío",
-            "+ $10.000 Depósito"
-        ]));
-
-        /* se redirecciona a la pagina menu, se ralentiza 1 segundo el cambio */
-        setTimeout(() => {
-            window.location.href = "menu.html";
-        }, 1000);
-    } /* se entrega el mensaje de error */else {
-        mensaje.textContent = "Credenciales incorrectas";
-        mensaje.className = "text-danger";
-    }
 });
