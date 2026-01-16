@@ -1,48 +1,52 @@
-/* se deja como constante los datos en el formulario */
-const form = document.getElementById("depositForm");
-/* se deja como constante el input */
-const inputMonto = document.getElementById("monto");
-/* se deja como constante boton depositar */
-const boton = document.getElementById("btnDepositar");
+/* Espera a que todo el documento HTML esté completamente cargado */
+$(document).ready(function () {
+    /* Selectores de jQuery */
+    const $inputMonto = $("#monto");
+    const $boton = $("#btnDepositar");
 
-/* escucha los eventos del cuando se ingresan datos al input */
-inputMonto.addEventListener("input", function () {
-/* captura lo que esta en la caja del input */    
-    let valor = inputMonto.value;
-    /* Validación para habilitar el botón si el numero en la caja es mayor que 1000 */
-    if (valor <= 1000) {
-        boton.disabled = true;
-    } else {
-        boton.disabled = false;
-    }
-});
+    /* Escucha los eventos cuando se ingresan datos al input */
+    $inputMonto.on("input", function () {
+        /* Capturamos el valor actual del input */
+        let valor = $(this).val();
+        
+        /* Validación para habilitar el botón */
+        /* .prop() se usa para manejar propiedades como "disabled */
+        if (valor <= 1000) {
+            $boton.prop("disabled", true);
+        } else {
+            $boton.prop("disabled", false);
+        }
+    });
 
-/* Funcion para cuando se haga click en el boton depositar */
-boton.addEventListener("click", function (e) {
-    e.preventDefault();
+    /* Función para cuando se haga clic en el botón depositar */
+    $boton.click(function (e) {
+        /* Evita que el formulario se envíe y recargue la página */
+        e.preventDefault();
 
-    /* se deja como variable el saldo guardado en la memoria */
-    let saldoGuardado = localStorage.getItem("saldo");
-    /* se convierte a numero el dato traido de la memoria */
-    let saldo = Number(saldoGuardado);
-    /* se deja como numero el dato ingresado en el inputMonto */
-    let monto = Number(inputMonto.value);
+        /* Manejo del Saldo desde localStorage*/
+        let saldo = Number(localStorage.getItem("saldo")) || 0;
+        /* Obtenemos el monto ingresado por el usuario */
+        let monto = Number($inputMonto.val());
 
-    /* se suma y se guarda el nuevo monto y lo guarda en la memoria*/
-    saldo = saldo + monto;
-    localStorage.setItem("saldo", saldo);
+        /* Sumamos y guardamos el nuevo saldo */
+        saldo += monto;
+        /* Guardamos el nuevo saldo en localStorage */
+        localStorage.setItem("saldo", saldo);
 
-    /* trae los datos de los movimientos desde la memoria en forma de texto */
-    let datosHistorial = localStorage.getItem("movimientos");
-    /* se convierte los datos del historial a una lista */
-    let movimientos = JSON.parse(datosHistorial);
+        /* Manejo del Historial de Movimientos */
 
-    /* agregamos nuevos movimiento a la lista en forma de texto */
-    movimientos.push("+ $" + monto + " Depósito");
+        /* Obtenemos los movimientos guardados en localStorage */
+        let datosHistorial = localStorage.getItem("movimientos");
+        /* Obtenemos los datos o creamos una lista vacía si no existe */
+        let movimientos = datosHistorial ? JSON.parse(datosHistorial) : [];
 
-    /* guardamos la nueva lista en forma de texto */
-    localStorage.setItem("movimientos", JSON.stringify(movimientos));
+        /* Agregamos el nuevo movimiento */
+        movimientos.push(`+ $${monto.toLocaleString()} Depósito`);
 
-    /* redirección a pagina menu*/
-    window.location.href = "menu.html";
+        /* Guardamos la lista actualizada de movimientos */
+        localStorage.setItem("movimientos", JSON.stringify(movimientos));
+
+        /* Redirección al menú */
+        window.location.href = "menu.html";
+    });
 });
