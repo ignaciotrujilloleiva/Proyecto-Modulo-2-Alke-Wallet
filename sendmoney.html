@@ -16,26 +16,27 @@
 <body>
     <!-- Contenedor principal -->
     <main class="container min-vh-100 d-flex align-items-center justify-content-center">
-        <!-- tarjeta desde bootstrap -->
+        <!-- tarjeta de bootstrap que contiene el sendmoney -->
         <div class="card card-base sendmoney-card shadow-lg p-4">
             <div class="card-body">
-                <!-- contenedor imagen deposito -->
+                <!-- contenedor de la imagen del Enviar Dinero -->
                 <div class="mb-3">
                     <img src="/img/Enviar dinero.png" class="img-fluid logoSend" alt="Enviar dinero Logo">
                 </div>
+                <!-- Titulo del Enviar Dinero -->
                 <h2 class="text-center d-flex flex-column align-items-center">Enviar Dinero
                 </h2>
                 <!-- Inicio del formulario -->
                 <form>
-                    <!-- Input group admite juntar el input con el boton -->
+                    <!-- Input group admite juntar visualmente el <input> con el <boton> -->
                     <div class="input-group mt-4">
-                        <!-- Campo de busqueda -->
+                        <!-- Campo de texto para buscar contactos -->
                         <input type="text" class="form-control" placeholder="Buscar contacto">
                         <!-- Boton de busqueda -->
                         <button type="button" class="btn btn-primary">Buscar</button>
                     </div>
                     <!-- barra para seleccionar contactos ya guardados -->
-                    <!-- ID para el uso con JavaScript -->
+                    <!-- ID para la captura del <select> -->
                     <div class="mt-3">
                         <select id="ContactSelect" class="form-select" name="contactoSeleccionado"
                             aria-label="Default select example">
@@ -49,25 +50,25 @@
                     <div class="mt-3">
                         <label for="LabelMonto">Monto a enviar</label>
                         <input type="number" id="LabelMonto" class="form-control" placeholder="$">
-
                     </div>
-
-                    <!-- Botón para agregar un nuevo contacto -->
-                    <!-- se agregan las opciones para que sea un modal -->
+                    <!-- Botón para abrir el modal de agregar un nuevo contacto -->
+                    <!-- data-bs-toggle y data-bs-target activan el modal -->
                     <button type="button" class="btn btn-outline-secondary w-100 mt-4" data-bs-toggle="modal"
                         data-bs-target="#modalContacto">
+                        <!-- Ícono de agregar persona -->
                         <i class="bi bi-person-add"></i> Agregar nuevo contacto
                     </button>
                     <!-- Estructura del Modal de Bootstrap -->
                     <div class="modal fade" id="modalContacto" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-
+                                <!-- Cabecera del modal -->
                                 <div class="modal-header">
                                     <h5 class="modal-title">Nuevo Contacto</h5>
+                                    <!-- Botón para cerrar el modal -->
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
-
+                                <!-- Cuerpo del modal -->
                                 <div class="modal-body">
                                     <input type="text" id="nombre" class="form-control mb-2"
                                         placeholder="Nombre y Apellido">
@@ -75,7 +76,7 @@
                                     <input type="text" id="alias" class="form-control mb-2" placeholder="Alias">
                                     <input type="text" id="banco" class="form-control mb-2" placeholder="Banco">
                                 </div>
-
+                                <!-- Pie del modal -->
                                 <div class="modal-footer">
                                     <button id="btnguardarContacto" type="button" class="btn btn-primary">
                                         Guardar Contacto
@@ -85,21 +86,24 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Boton desde bootstrap deshabilitado por defecto-->
+                    <!-- Botón principal para enviar dinero deshabilitado por defecto -->
                     <button id="btnEnviarDinero" class="btn btn-primary w-100 mt-3" disabled>
                         Enviar Dinero
                     </button>
-
                 </form>
-
                 <!-- Enlace para volver al menú principal -->
                 <a href="menu.html" class="btn btn-link mt-3">Volver al menú</a>
             </div>
         </div>
     </main>
-
-
+    <!-- Pie de pagina -->
+    <footer class="text-center py-3 bg-light border-top">
+        <div class="container">
+            <span class="text-muted">&copy; 2026 Alke Wallet. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+    <!-- Integración de Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Integración de JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
