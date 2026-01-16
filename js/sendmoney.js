@@ -1,118 +1,120 @@
-/* Captura de elementos en constantes */
-/* Select donde se elige el contacto */
-const select = document.getElementById("ContactSelect");
-/* Input donde se ingresa el monto a enviar */
-const montoInput = document.getElementById("LabelMonto");
-/* Botón para enviar dinero */
-const enviarBtn = document.getElementById("btnEnviarDinero");
+/* En jQuery, esperamos a que el documento HTML esté listo */
+$(document).ready(function () {
+    /* Selectores de jQuery */
+    /* Se guarda en una constante con $ para indicar que es un objeto jQuery */
+    const $select = $("#ContactSelect");
+    const $montoInput = $("#LabelMonto");
+    const $enviarBtn = $("#btnEnviarDinero");
+    const $guardarContacto = $("#btnguardarContacto");
 
-/* inputs para el modal */
-const nombre = document.getElementById("nombre");
-const cbu = document.getElementById("cbu");
-const alias = document.getElementById("alias");
-const banco = document.getElementById("banco");
-/* Botón para guardar contacto */
-const guardarContacto = document.getElementById("btnguardarContacto");
+    /* Inputs del modal */
+    const $nombre = $("#nombre");
+    const $cbu = $("#cbu");
+    const $alias = $("#alias");
+    const $banco = $("#banco");
 
-/* funcion para validar Envio */
-/* habilita el boton al esta seleccionado un contacto en la barra select y un monto ingresado mayor a 1000 */
-function validarEnvio() {
-    enviarBtn.disabled =
-        select.selectedIndex === 0 || montoInput.value < 1000;
-}
-/* eventos para habilitar el boton para enviar dinero */
-select.addEventListener("change", validarEnvio);
-montoInput.addEventListener("input", validarEnvio);
+    /* Función para validar Envío */
+    function validarEnvio() {
+        /* selectedIndex !== 0 valida que NO esté seleccionada la opción por defecto */
+        /* $montoInput.val() >= 1000 valida que el monto mínimo sea 1000 */
+        const esValido = $select.prop("selectedIndex") !== 0 && $montoInput.val() >= 1000;
+        /* .prop("disabled", True o False) permite habilitar o deshabilitar el botón */
+        $enviarBtn.prop("disabled", !esValido);
+    }
 
-/* funcion para cargar los contactos desde el localstorage y que no se pierdan al recargar */
-function cargarContactos() {
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    /* Eventos para habilitar el botón */
 
-    contactos.forEach(contacto => {
-        const option = document.createElement("option");
-        option.textContent = `${contacto.nombre} - ${contacto.banco}`;
-        option.value = contacto.alias;
-        select.appendChild(option);
+    /* se valida cuando cambia el contacto seleccionado */
+    $select.on("change", validarEnvio);
+    /* se valida cuando el usuario escribe el monto */
+    $montoInput.on("input", validarEnvio);
+
+    /* Función para cargar los contactos */
+    function cargarContactos() {
+        const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+        
+        /* Recorremos cada contacto guardado */
+        contactos.forEach(contacto => {
+            /* Se crea dinámicamente una opción <option> usando jQuery */
+            $select.append($('<option>', {
+                value: contacto.alias,
+                text: `${contacto.nombre} - ${contacto.banco}`
+            }));
+        });
+    }
+
+    cargarContactos();
+
+    /* Agregar un contacto con los datos del modal */
+    $guardarContacto.click(function () {
+        /* Valida que los campos no esten vacios */
+        if (!$nombre.val() || !$cbu.val() || !$alias.val() || !$banco.val()) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        /* Se crea un contacto con los datos ingresados */
+        const contacto = {
+            nombre: $nombre.val(),
+            cbu: $cbu.val(),
+            alias: $alias.val(),
+            banco: $banco.val()
+        };
+
+        /* Se obtienen los contactos existentes, se cargan a la lista y despues va al localStorage */
+        let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+        contactos.push(contacto);
+        localStorage.setItem("contactos", JSON.stringify(contactos));
+
+        /* Se agrega el contacto al <select> */
+        $select.append($('<option>', {
+            value: contacto.alias,
+            text: `${contacto.nombre} - ${contacto.banco}`
+        }));
+
+        /* Se limpian los inputs del modal */
+        $nombre.val(""); $cbu.val(""); $alias.val(""); $banco.val("");
+
+        /* Esconder el modal usando la instancia de Bootstrap */
+        /* Se mantiene el uso de javascript por inconvenientes con las versiones de jQuery */
+        const modalElement = document.getElementById("modalContacto");
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        /* Se oculta el modal */
+        modal.hide();
+
+        /* Confirmación al usuario */
+        alert("Contacto agregado correctamente");
     });
-}
 
-/* Se ejecuta al cargar la página */
-cargarContactos();
+    /* Envío de dinero */
+    $enviarBtn.click(function (e) {
+        e.preventDefault();
 
+        /* Se obtiene el monto ingresado */
+        const monto = Number($montoInput.val());
+        /* Se obtiene el saldo actual desde localStorage */
+        let saldo = Number(localStorage.getItem("saldo"));
 
+        /* Validación de saldo suficiente */
+        if (monto > saldo) {
+            alert("Saldo insuficiente");
+            return;
+        }
 
+        /* Se descuenta el monto del saldo y se guarda en el localStorage*/
+        saldo -= monto;
+        localStorage.setItem("saldo", saldo);
 
-/* Agregar un contacto con los datos del modal */
-guardarContacto.addEventListener("click", () => {
+        /* Se obtiene el historial de movimientos */
+        let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+        /* Se obtiene el texto del contacto seleccionado */
+        const contactoTexto = $select.find("option:selected").text();
+        
+        /* Se agrega el nuevo movimiento al historial y se guarda en localStorage */
+        movimientos.push(`- $${monto.toLocaleString()} Envío a ${contactoTexto}`);
+        localStorage.setItem("movimientos", JSON.stringify(movimientos));
 
-    if (!nombre.value || !cbu.value || !alias.value || !banco.value) {
-        alert("Completa todos los campos");
-        return;
-    }
-    const contacto = {
-        nombre: nombre.value,
-        cbu: cbu.value,
-        alias: alias.value,
-        banco: banco.value
-    };
-
-    /* Obtiene contactos existentes desde el localStorage y lo convierte a una lista */
-    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    /* Agrega el nuevo contacto */
-    contactos.push(contacto);
-    /* Guarda en localStorage */
-    localStorage.setItem("contactos", JSON.stringify(contactos));
-
-    /* Agrega el contacto al select */
-    const option = document.createElement("option");
-    option.textContent = `${contacto.nombre} - ${contacto.banco}`;
-    option.value = contacto.alias;
-    select.appendChild(option);
-
-    /* cambia el contenido del modal por " " */
-    nombre.value = "";
-    cbu.value = "";
-    alias.value = "";
-    banco.value = "";
-
-    /* esconde el modal */
-    const modal = bootstrap.Modal.getInstance(
-        document.getElementById("modalContacto")
-    );
-    modal.hide();
-
-    alert("Contacto agregado correctamente");
-});
-
-/* Envio de dinero */
-/* Evento del boton enviar dinero */
-enviarBtn.addEventListener("click", (e) => {
-
-    e.preventDefault();
-
-    /* Convierte el monto a número */
-    const monto = Number(montoInput.value);
-    /* obtiene el saldo desde el local storage */
-    let saldo = Number(localStorage.getItem("saldo"));
-    /* verifica si el saldo es menor que el monto a enviar */
-    if (monto > saldo) {
-        alert("Saldo insuficiente");
-        return;
-    }
-
-    /* Descuenta el saldo */
-    saldo -= monto;
-    /* Guarda el nuevo saldo */
-    localStorage.setItem("saldo", saldo);
-
-    /* obtiene los movimiento del localStorage y los convierte en un lista */
-    let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
-    /* Agrega nuevo movimiento a la lista */
-    movimientos.push(`- $${monto} Envío a ${select.options[select.selectedIndex].text}`);
-    /*actualiza la lista de Movimientos*/
-    localStorage.setItem("movimientos", JSON.stringify(movimientos));
-
-    alert("Envío realizado con éxito");
-    /* Redirige al menú principal */
-    window.location.href = "menu.html";
+        alert("Envío realizado con éxito");
+        window.location.href = "menu.html";
+    });
 });
