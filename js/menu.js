@@ -1,42 +1,38 @@
-/* constante para saldo mostrado en pantalla */
-const saldoHTML = document.getElementById("saldo");
+/* En jQuery, esperamos a que el documento HTML esté listo */
+$(document).ready(function () {
+    /* Obtenemos el saldo desde localStorage */
+    const saldo = Number(localStorage.getItem("saldo")) || 0;
 
-/* constante para mensaje de redirección */
-const mensaje = document.getElementById("mensaje");
+    /* Mostramos el saldo en pantalla usando jQuery */
+    $("#saldo").text(`$${saldo}`);
 
-/* Obtenemos el saldo desde localStorage del inicio de sesión */
-/* si no existe es 0 */
-const saldo = Number(localStorage.getItem("saldo")) || 0;
+    /* Función reutilizable para mostrar mensaje y redirigir */
+    function redirigir(texto, url) {
+        /* Selecciona el párrafo con id="mensaje */
+        $("#mensaje").text(`Redirigiendo a ${texto}...`);
 
-/* Mostramos el saldo en pantalla */
-saldoHTML.textContent = `$${saldo}`;
+        /* tiempo de 1 segundo antes de redirigir */
+        setTimeout(function() {
+            window.location.href = url;
+        }, 1000);
+    }
 
-/* Función reutilizable para mostrar mensaje y redirigir */
-function redirigir(texto, url) {
+    /* Eventos de redirección con jQuery */
+    /* Se capturan los clicks de los botones por ID y se usa el método .click */
+    $("#deposit").click(function(e) {
+        /* Evita que el enlace <a> recargue la página */
+        e.preventDefault();
+        /* Llama a la función redirigir */
+        redirigir("depósito", "deposit.html");
+    });
 
-    /* Mostramos mensaje informativo */
-    mensaje.textContent = `Redirigiendo a ${texto}...`;
+    $("#sendmoney").click(function(e) {
+        e.preventDefault();
+        redirigir("enviar dinero", "sendmoney.html");
+    });
 
-    /* tiempo de 1 segundo antes de redirigir */
-   setTimeout(function() {
-    window.location.href = url;
-}, 1000);
-}
-
-/* Evento redirección botón Depositar */
-document.getElementById("deposit").addEventListener("click", function(e) {
-    e.preventDefault();
-    redirigir("depósito", "deposit.html");
-});
-
-/* Evento redirección botón Enviar Dinero */
-document.getElementById("sendmoney").addEventListener("click", function(e) {
-    e.preventDefault();
-    redirigir("enviar dinero", "sendmoney.html");
-});
-
-/* Evento redirección botón Últimos Movimientos */
-document.getElementById("transactions").addEventListener("click", function(e) {
-    e.preventDefault();
-    redirigir("últimos movimientos", "transactions.html");
+    $("#transactions").click(function(e) {
+        e.preventDefault();
+        redirigir("últimos movimientos", "transactions.html");
+    });
 });
